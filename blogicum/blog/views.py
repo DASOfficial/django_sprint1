@@ -1,5 +1,21 @@
 from django.shortcuts import render
 
+
+def index(request):
+    context = {'posts': posts}
+    return render(request, 'blog/index.html', context)
+
+
+def post_detail(request, id):
+    context = {'post': posts[id]}
+    return render(request, 'blog/detail.html', context)
+
+
+def category_posts(request, category_slug):
+    context = {'category_slug': category_slug}
+    return render(request, 'blog/category.html', context)
+
+
 posts = [
     {
         'id': 0,
@@ -40,20 +56,5 @@ posts = [
                 жалкие обломки,  да и те видны только во время отлива.
                 Весь этот день я хлопотал  около вещей: укрывал и
                 укутывал их, чтобы не испортились от дождя.''',
-    },
+    }
 ]
-
-
-def index(request):
-    context = {'posts': posts}
-    return render(request, 'blog/index.html', context)
-
-
-def post_detail(request, id):
-    context = {'post': posts[id]}
-    return render(request, 'blog/detail.html', context)
-
-
-def category_posts(request, category_slug):
-    context = {'category_slug': category_slug}
-    return render(request, 'blog/category.html', context)
