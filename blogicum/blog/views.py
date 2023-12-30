@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from django.http import Http404
+
 
 def index(request):
     context = {'posts': posts}
@@ -7,7 +9,11 @@ def index(request):
 
 
 def post_detail(request, id):
-    context = {'post': posts[id]}
+    try:
+        selected_post = posts[id]
+    except IndexError:
+        raise Http404("Пост не найден")
+    context = {'post': selected_post}
     return render(request, 'blog/detail.html', context)
 
 
@@ -56,5 +62,5 @@ posts = [
                 жалкие обломки,  да и те видны только во время отлива.
                 Весь этот день я хлопотал  около вещей: укрывал и
                 укутывал их, чтобы не испортились от дождя.''',
-    }
+    },
 ]
