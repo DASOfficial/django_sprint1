@@ -2,26 +2,6 @@ from django.shortcuts import render
 
 from django.http import Http404
 
-
-def index(request):
-    context = {'posts': posts}
-    return render(request, 'blog/index.html', context)
-
-
-def post_detail(request, id):
-    try:
-        selected_post = posts[id]
-    except IndexError:
-        raise Http404("Пост не найден")
-    context = {'post': selected_post}
-    return render(request, 'blog/detail.html', context)
-
-
-def category_posts(request, category_slug):
-    context = {'category_slug': category_slug}
-    return render(request, 'blog/category.html', context)
-
-
 posts = [
     {
         'id': 0,
@@ -64,3 +44,25 @@ posts = [
                 укутывал их, чтобы не испортились от дождя.''',
     },
 ]
+
+
+def index(request):
+    context = {'posts': posts}
+    return render(request, 'blog/index.html', context)
+
+
+# Создаем структуру данных для постов
+post_dict = {post['id']: post for post in posts}
+
+
+def post_detail(request, id):
+    selected_post = post_dict.get(id)
+    if not selected_post:
+        raise Http404("Пост не найден")
+    context = {'post': selected_post}
+    return render(request, 'blog/detail.html', context)
+
+
+def category_posts(request, category_slug):
+    context = {'category_slug': category_slug}
+    return render(request, 'blog/category.html', context)
